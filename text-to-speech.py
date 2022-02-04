@@ -13,8 +13,8 @@ import sys
 # Create a client using the credentials and region defined in the [adminuser]
 # section of the AWS credentials file (~/.aws/credentials).
 session = Session(profile_name="default",
-                  aws_access_key_id="AKIA4TGXFOTEX5TGCL42",  
-                  aws_secret_access_key="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")
+                  aws_access_key_id="#########",  
+                  aws_secret_access_key="#######")
 
 def text_to_speech(text, page, title = input("What course is this for?")):
     '''
