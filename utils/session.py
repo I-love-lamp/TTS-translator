@@ -14,8 +14,8 @@ class AWSClient(object):
         # section of the AWS credentials file (~/.aws/credentials).
 
         self.launch = Session(profile_name="default",
-                          aws_access_key_id="AKIA4TGXFOTEVZACDMWD",  
-                          aws_secret_access_key="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")
+                          aws_access_key_id="**********",  
+                          aws_secret_access_key="*****************")
         
     def extract_key(self, keyfile):
         keypair=''
