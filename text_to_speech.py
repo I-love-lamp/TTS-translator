@@ -13,8 +13,8 @@ import sys
 # Create a client using the credentials and region defined in the [adminuser]
 # section of the AWS credentials file (~/.aws/credentials).
 session = Session(profile_name="default",
-                  aws_access_key_id="#########",  
-                  aws_secret_access_key="#######")
+                  aws_access_key_id="xxxx",  
+                  aws_secret_access_key="xxxx")
 
 class TextToSpeech():
     
@@ -24,7 +24,7 @@ class TextToSpeech():
         self.voice = voice
         self.output_format = out_format
     
-    def text_to_speech(self, text, page, title = input("What course is this for?")):
+    def text_to_speech(self, page, text, title):
         '''
         Function to generate 
     
@@ -34,6 +34,8 @@ class TextToSpeech():
     
         '''
         polly = session.client("polly")
+        
+        # TODO: if text is > 300 chars, split into N files and recombine
         
         try:
             # Request speech synthesis
@@ -57,4 +59,4 @@ class TextToSpeech():
         else:
             sys.exit(-1)
     
-    .
+    

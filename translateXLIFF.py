@@ -4,16 +4,16 @@ import xlwt
 from xlwt import Workbook 
 from translator import Translator
 from bs4 import BeautifulSoup
+import os
 
 
 #Set the path
-path = 'C:/e-learning/Cybersecurity/CS_Fund/french/translationtxt/Cybersecurity-fundamentals-spanish.xlf'
-course_player = int(input("Are you translating course content or course player labels? 1 = content  2 = player labels...     "))
-player_source_lang = "English"
+path = 'C:/Users/DaireStokes/OneDrive - GOAL/Documents/Learning content/Cybersecurity/SecuringDevices/I18n/es-ES/'
+file = 'Securing-your-devices.xlf'
+xlf_path = os.path.join(path, file)
+# tree = ET.parse(xlf_path) # TODO: remove this
 
-tree = ET.parse(path) # TODO: remove this
-
-with open (path, encoding='utf8') as file:
+with open (xlf_path, encoding='utf8') as file:
     data = file.read()
 
 # parse and store contents of XLF
@@ -21,24 +21,25 @@ trans_xlf = BeautifulSoup(data, 'xml')
 
 
 # get the target and source languages
-if course_player == 1:
-    target_lang = trans_xlf.find('file', {'original': {'course'}}).get('target-language')
-    source_lang = trans_xlf.find('file', {'original': {'course'}}).get('source-language')
-    source_fname = f'content_{source_lang}_text.xls'
-    target_fname = f'content_{target_lang}_text.xls'
-elif course_player == 2:
-    target_lang = trans_xlf.find('file', {'original': {player_source_lang}}).get('target-language')
-    source_lang = trans_xlf.find('file', {'original': {player_source_lang}}).get('source-language')
-    source_fname = f'player_{source_lang}_text.xls'
-    target_fname = f'player_{target_lang}_text.xls'
+target_lang =trans_xlf.find('file').get('target-language')
+source_lang = trans_xlf.find('file').get('source-language')
+
+
+# create a file name for each XLF file (player or content)
+if trans_xlf.find('file').get('original') != 'English':
+    source_fname = f'{path}content_{source_lang}_text.xls'
+    target_fname = f'{path}content_{target_lang}_text.xls'
+elif trans_xlf.find('file').get('original') == 'English':
+    source_fname = f'{path}player_{source_lang}_text.xls'
+    target_fname = f'{path}player_{target_lang}_text.xls'
 else:
-    input('Enter \'1\' or \'2\'.....   ')
+    input('Check your file has the attribute original=\"English\" (or other language) or original=\"course\"')
 
 root = trans_xlf
 
 
 # open the translation file
-xliff_file = open(path, 'w', encoding='utf-8')
+xliff_file = open(xlf_path, 'w', encoding='utf-8')
 
 
 for root in root:
@@ -96,8 +97,9 @@ for column in range(sheet.nrows):
             sheet1.write(column, row, value)
         else:
             value = translator.translate_text(value, source_lang, target_lang)
-            value=str(value).strip()
-            sheet1.write(column, row, value)
+            if value:
+                value=str(value).strip()
+                sheet1.write(column, row, value)
 
 # save target text to XLS 
 wb.save(target_fname)
@@ -119,7 +121,7 @@ for column in range(tsheet.nrows):
 
 
 #get the root element 
-tree=ET.ElementTree(file=path)
+tree=ET.ElementTree(file=xlf_path)
 root=tree.getroot()
 
 #One by one store the translated text within the respective target tag and save it.
