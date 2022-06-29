@@ -54,11 +54,10 @@ while not service == 0:
             service = input("Translation (press t) for Speech synthesis (press s).....")
             if service == 't':
                 translator = Translator()
-                file_path = input("Enter the file name (needs to be in same directory).....   ")
+                file_path = input("Enter the file path.....   ")
                 source_text = translator.get_file_text(file_path)
                 translated_text = translator.translate_text(source_text, source_lang, target_lang)
-                
-                       
+                translator.write_translated_file(translated_text, file_path, target_lang)
             elif service == 's':
                 tts = TextToSpeech(voice, 'mp3')
                 tts.text_to_speech(1, input("Paste the text here....."), title = input("What course is this for? ...."))

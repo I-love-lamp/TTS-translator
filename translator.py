@@ -23,7 +23,7 @@ class Translator():
     ####  grab text from source ###
     
     # parse text from XLFF files
-    # TODO
+    # TODO handle ParamValidationError - empty file
     
     # parse text from plain text file
     def get_file_text(self, filepath):
